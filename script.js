@@ -48,13 +48,13 @@ function animate() {
  */
 function connectNeurons(x1,y1,x2,y2) {
   // Calculate angle of line from neuron 1 to neuron 2
-  // and set the start point 
+  // and calculate the start coordinates
   let angle = Math.atan2(y2-y1,x2-x1);
   let startX = radius * Math.cos(angle) + x1;
   let startY = radius * Math.sin(angle) + y1;
 
   // Calculate angle from neuron 2 to neuron 1
-  // and set the destination point
+  // and calculate the destination coordinates
   angle = Math.atan2(y1-y2, x1-x2);
   let targetX = radius * Math.cos(angle) + x2;
   let targetY = radius * Math.sin(angle) + y2;
