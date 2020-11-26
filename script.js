@@ -95,17 +95,17 @@ function drawWeights() {
  * Draws a neuron on the canvas
  * @param {number} x - X coordinate of the neuron on the canvas
  * @param {number} y - Y coordinate of the neuron on the canvas
- * @param {string} lable - Descriptive lable for the neuron
+ * @param {string} label - Descriptive label for the neuron
  */
-function drawNeuron(x, y, lable) {
+function drawNeuron(x, y, label) {
   // Draw the neuron
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, 2*Math.PI);
   ctx.stroke();
 
-  // Draw neuron lable
+  // Draw neuron label
   ctx.font = '20px Arial';
-  ctx.fillText(lable, x-10, y+5);
+  ctx.fillText(label, x-10, y+5);
 }
 
 animate();
