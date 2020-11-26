@@ -20,23 +20,23 @@ function animate() {
   // Connect the neurons
 
   // Connect x1 to h1
-  connectNeurons(100,100,400,100);
+  connectNeurons(100,100,400,100,'red');
   // Connect x2 to h2
-  connectNeurons(100,300,400,300);
+  connectNeurons(100,300,400,300,'purple');
   //Connect x1 to h2
-  connectNeurons(100,100,400,300);
+  connectNeurons(100,100,400,300,'blue');
   // Connect x2 to h1
-  connectNeurons(100,300,400,100);
+  connectNeurons(100,300,400,100,'green');
   // Connect b1 to h1
-  connectNeurons(250,400,400,100);
+  connectNeurons(250,400,400,100,'red');
   // Connect b1 to h2
-  connectNeurons(250,400,400,300);
+  connectNeurons(250,400,400,300,'purple');
   // Connect h1 to y1
-  connectNeurons(400,100,700,200);
+  connectNeurons(400,100,700,200,'blue');
   // Connect h2 to y1
-  connectNeurons(400,300,700,200);
+  connectNeurons(400,300,700,200,'green');
   // Connect b2 to y1
-  connectNeurons(550,400,700,200);
+  connectNeurons(550,400,700,200,'red');
 
   // Draw the weight values
   drawWeights();
@@ -48,8 +48,10 @@ function animate() {
  * @param {number} y1 - Y coordinate of neuron 1
  * @param {number} x2 - X coordinate of neuron 2
  * @param {number} y2 - Y coordinate of neuron 2
+ * @param {string} color - color of the line connecting the neurons
  */
-function connectNeurons(x1,y1,x2,y2) {
+function connectNeurons(x1,y1,x2,y2,color) {
+  ctx.strokeStyle = color;
   // Calculate angle of line from the center of neuron 1 to neuron 2
   // and calculate the start coordinates
   let angle = Math.atan2(y2-y1,x2-x1);
@@ -74,15 +76,19 @@ function connectNeurons(x1,y1,x2,y2) {
  */
 function drawWeights() {
   ctx.font = '20px Arial';
+  ctx.fillStyle = 'red';
   ctx.fillText('w1:',200,90);
-  ctx.fillText('w2:',200,150);
-  ctx.fillText('w3:',120,220);
-  ctx.fillText('w4:',190,290);
-  ctx.fillText('w5:',500,100);
-  ctx.fillText('w6:',500,230);
   ctx.fillText('b1:',200,345);
-  ctx.fillText('b1:',310,400);
   ctx.fillText('b2:',500,320);
+  ctx.fillStyle = 'blue';
+  ctx.fillText('w2:',200,150);
+  ctx.fillText('w5:',500,100);
+  ctx.fillStyle = 'green';
+  ctx.fillText('w3:',120,220);
+  ctx.fillText('w6:',500,230);
+  ctx.fillStyle = 'purple';
+  ctx.fillText('w4:',190,290);
+  ctx.fillText('b1:',310,400);
 }
 
 /**
@@ -101,4 +107,5 @@ function drawNeuron(x, y, lable) {
   ctx.font = '20px Arial';
   ctx.fillText(lable, x-10, y+5);
 }
+
 animate();
