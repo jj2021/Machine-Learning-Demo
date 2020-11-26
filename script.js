@@ -37,6 +37,9 @@ function animate() {
   connectNeurons(400,300,700,200);
   // Connect b2 to y1
   connectNeurons(550,400,700,200);
+
+  // Draw the weight values
+  drawWeights();
 }
 
 /**
@@ -47,13 +50,13 @@ function animate() {
  * @param {number} y2 - Y coordinate of neuron 2
  */
 function connectNeurons(x1,y1,x2,y2) {
-  // Calculate angle of line from neuron 1 to neuron 2
+  // Calculate angle of line from the center of neuron 1 to neuron 2
   // and calculate the start coordinates
   let angle = Math.atan2(y2-y1,x2-x1);
   let startX = radius * Math.cos(angle) + x1;
   let startY = radius * Math.sin(angle) + y1;
 
-  // Calculate angle from neuron 2 to neuron 1
+  // Calculate angle from the center of neuron 2 to neuron 1
   // and calculate the destination coordinates
   angle = Math.atan2(y1-y2, x1-x2);
   let targetX = radius * Math.cos(angle) + x2;
@@ -64,6 +67,22 @@ function connectNeurons(x1,y1,x2,y2) {
   ctx.moveTo(startX,startY);
   ctx.lineTo(targetX,targetY);
   ctx.stroke();
+}
+
+/**
+ * Draw the weight values onto the diagram
+ */
+function drawWeights() {
+  ctx.font = '20px Arial';
+  ctx.fillText('w1:',200,90);
+  ctx.fillText('w2:',200,150);
+  ctx.fillText('w3:',120,220);
+  ctx.fillText('w4:',190,290);
+  ctx.fillText('w5:',500,100);
+  ctx.fillText('w6:',500,230);
+  ctx.fillText('b1:',200,345);
+  ctx.fillText('b1:',310,400);
+  ctx.fillText('b2:',500,320);
 }
 
 /**
