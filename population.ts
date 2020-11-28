@@ -12,4 +12,12 @@ class Population {
     return this.best;
   }
 
+  public getMember(index: number): Genome {
+    return this.individuals[index];
+  }
+
+  public setMember(index: number, genome: Genome) {
+    this.individuals[index] = genome;
+  }
+
 }
