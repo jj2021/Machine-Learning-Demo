@@ -2,7 +2,8 @@ class GeneticAlgorithm {
 
   static readonly MUTATION_RATE: number = 0.01;
   static readonly MAX_SAME_COUNT: number = 100;
-  static readonly POPULATION_SIZE = 1000;
+  static readonly GENOME_SIZE: number = 8;
+  static readonly POPULATION_SIZE = 10;
   readonly TOLERANCE: number = 0.01;
   samecount: number = 0;
   ylast: number;
@@ -19,7 +20,7 @@ class GeneticAlgorithm {
   }
 
   /**
-   * Generate a randome genome
+   * Generate a random genome
    * @param size number of genes in the genome
    */
   public randGenome(size:number): Genome {
@@ -68,6 +69,10 @@ class GeneticAlgorithm {
   private initPop(): Population {
     let pop = new Population(GeneticAlgorithm.POPULATION_SIZE);
     // TODO: Add random members to the population
+    for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
+      pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
+    }
+    console.log(pop);
     return pop;
   }
 

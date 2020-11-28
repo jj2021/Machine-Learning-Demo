@@ -1,9 +1,18 @@
-const canvas = document.getElementById('diagram');
-const ctx = canvas.getContext('2d');
+var canvas;
+var ctx;
 const radius = 50;
-canvas.width = 800;
-canvas.height = 500;
 
+/**
+ * Initialize the UI when the page loads
+ */
+var onDocumentLoad = function() {
+  canvas = document.getElementById('diagram');
+  ctx = canvas.getContext('2d');
+  canvas.width = 800;
+  canvas.height = 500;
+
+  animate();
+}
 /**
  * Draw the diagram of the neural network onto the canvas
  */
@@ -107,5 +116,3 @@ function drawNeuron(x, y, label) {
   ctx.font = '20px Arial';
   ctx.fillText(label, x-10, y+5);
 }
-
-animate();

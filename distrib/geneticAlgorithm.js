@@ -12,7 +12,7 @@ class GeneticAlgorithm {
         console.log("best = " + best.toString() + " fitness = " + best.getScore());
     }
     /**
-     * Generate a randome genome
+     * Generate a random genome
      * @param size number of genes in the genome
      */
     randGenome(size) {
@@ -55,6 +55,10 @@ class GeneticAlgorithm {
     initPop() {
         let pop = new Population(GeneticAlgorithm.POPULATION_SIZE);
         // TODO: Add random members to the population
+        for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
+            pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
+        }
+        console.log(pop);
         return pop;
     }
     /**
@@ -80,5 +84,6 @@ class GeneticAlgorithm {
 }
 GeneticAlgorithm.MUTATION_RATE = 0.01;
 GeneticAlgorithm.MAX_SAME_COUNT = 100;
-GeneticAlgorithm.POPULATION_SIZE = 1000;
+GeneticAlgorithm.GENOME_SIZE = 8;
+GeneticAlgorithm.POPULATION_SIZE = 10;
 //# sourceMappingURL=geneticAlgorithm.js.map
