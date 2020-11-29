@@ -41,7 +41,7 @@ class GeneticAlgorithm {
     // Initialize the population
     let population = this.initPop();
     // Run the training algorithm
-    this.train(population);
+    //this.train(population);
     // Return the best genome
     return population.getBest();
   }
@@ -119,6 +119,7 @@ class GeneticAlgorithm {
     for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
       pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
     }
+    pop.setBestWorst();
     console.log(pop);
     return pop;
   }

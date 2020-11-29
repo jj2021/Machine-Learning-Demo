@@ -2,6 +2,7 @@ class GeneticAlgorithm {
     constructor() {
         this.TOLERANCE = 0.01;
         this.samecount = 0;
+        this.ylast = 0;
     }
     /**
      * Run the genetic algorithm for the XOR network
@@ -27,26 +28,68 @@ class GeneticAlgorithm {
      * Solve the objective
      */
     solve() {
-        // TODO: Initialize the population
+        // Initialize the population
         let population = this.initPop();
-        // TODO: Run the training algorithm
-        // TODO: Return the best genome
-        return new Genome(8);
+        // Run the training algorithm
+        //this.train(population);
+        // Return the best genome
+        return population.getBest();
     }
     /**
      * Run the training algorithm (iterate over generations)
+     * @param population The population to train
      */
-    train() {
-        // TODO: iterate until convergence
+    train(population) {
+        let iteration = 0;
+        let converged = false;
+        while (!converged) {
+            // Generate the next epoch
+            this.iterate(population);
+            // Output best genome and error
+            let err = population.best.getScore();
+            console.log(err);
+            // Check for convergence
+            converged = this.didConverge(err);
+        }
+    }
+    /**
+     * Generate the next generation of individuals
+     * @param population The population used to create the next epoch
+     */
+    iterate(population) {
         // TODO: crossover and mutate at the correct rate
-        // TODO: output/set best genome
-        // TODO: check for convergence
+        for (let i = 0; i < population.individuals.length; i++) {
+            // TODO: Normalize the fitness values of the individuals
+            // TODO: Create a "mating pool" based on the scaled fitness
+            // TODO: Execute crossover by random selection from the mating pool
+            // TODO: child.mutate(probability)
+        }
+    }
+    /**
+     * Normalize an individuals score to 0 - 1 range
+     * @param score score to normalize
+     * @param max max score
+     * @param min min score
+     */
+    normalize(score, max, min) {
+        return (score - min) / (max - min);
     }
     /**
      * Check whether or not the network has converged
+     * @param err The error of the current best individual
      */
-    didConverge() {
+    didConverge(err) {
         // TODO: Check for convergence and return result
+        if (this.samecount >= GeneticAlgorithm.MAX_SAME_COUNT) {
+            return true;
+        }
+        if (Math.abs(this.ylast - err) < this.TOLERANCE) {
+            this.samecount++;
+        }
+        else {
+            this.samecount = 0;
+        }
+        this.ylast = err;
         return false;
     }
     /**
@@ -58,18 +101,9 @@ class GeneticAlgorithm {
         for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
             pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
         }
+        pop.setBestWorst();
         console.log(pop);
         return pop;
-    }
-    /**
-     * Create offspring from two existing genomes
-     */
-    crossover() {
-        // TODO: Implement crossover algorithm for simulating offspring
-        // TODO: Normalize the fitness values of the individuals
-        // TODO: Create a "mating pool" based on the scaled fitness
-        // TODO: Execute crossover by random selection from the mating pool
-        // TODO: child.mutate(probability)
     }
     /**
      * Decides whether or not the function will execute based on
