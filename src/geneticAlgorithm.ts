@@ -41,7 +41,7 @@ class GeneticAlgorithm {
     // Initialize the population
     let population = this.initPop();
     // Run the training algorithm
-    //this.train(population);
+    this.train(population);
     // Return the best genome
     return population.getBest();
   }
@@ -57,11 +57,13 @@ class GeneticAlgorithm {
     while(!converged) {
       // Generate the next epoch
       this.iterate(population);
+      iteration++;
       // Output best genome and error
       let err = population.best.getScore();
-      console.log(err);
+      console.log("" + iteration + ": " + err);
       // Check for convergence
-      converged = this.didConverge(err);
+      //converged = this.didConverge(err);
+      converged = true;
     }
   }
 
@@ -71,24 +73,38 @@ class GeneticAlgorithm {
    */
   private iterate(population: Population) {
     // TODO: crossover and mutate at the correct rate
+    let bestGenome = population.getBest();
+    let worstGenome = population.getWorst();
+    let bestScore = bestGenome.getScore();
+    let worstScore = worstGenome.getScore();
 
+    let matingPool = new Array<Genome>();
     for (let i = 0; i < population.individuals.length; i++) {
       // TODO: Normalize the fitness values of the individuals
-
+      let normScore = this.normalize(population.individuals[i].getScore(),bestScore,worstScore);
+      console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
       // TODO: Create a "mating pool" based on the scaled fitness
-      // TODO: Execute crossover by random selection from the mating pool
-      // TODO: child.mutate(probability)
+      let n = normScore * 100;
+      for(let i = 0; i < n; i++) {
+        matingPool.push(population.individuals[i]);
+      }
     }
+    console.log("Mating pool: " + matingPool.length);
   }
 
   /**
    * Normalize an individuals score to 0 - 1 range
    * @param score score to normalize
-   * @param max max score
-   * @param min min score
+   * @param best best score
+   * @param worst worst score
    */
-  private normalize(score: number, max: number, min: number): number {
-    return (score - min)/(max - min);
+  private normalize(score: number, best: number, worst: number): number {
+    return (score - worst)/(best - worst);
+  }
+
+  private crossover() {
+    // TODO: Execute crossover by random selection from the mating pool
+    // TODO: child.mutate(probability)
   }
 
   /**
