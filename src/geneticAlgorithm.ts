@@ -41,8 +41,9 @@ class GeneticAlgorithm {
     // TODO: Initialize the population
     let population = this.initPop();
     // TODO: Run the training algorithm
+    this.train();
     // TODO: Return the best genome
-    return new Genome(8);
+    return population.getBest();
   }
 
   /**
@@ -50,9 +51,15 @@ class GeneticAlgorithm {
    */
   private train() {
     // TODO: iterate until convergence
-      // TODO: crossover and mutate at the correct rate
-      // TODO: output/set best genome
+      // TODO: output best genome and error
       // TODO: check for convergence
+  }
+
+  /**
+   * Generate the next generation of individuals
+   */
+  private iterate() {
+    // TODO: crossover and mutate at the correct rate
   }
 
   /**
