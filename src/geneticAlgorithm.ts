@@ -104,7 +104,7 @@ class GeneticAlgorithm {
 
   private crossover() {
     // TODO: Execute crossover by random selection from the mating pool
-    // TODO: child.mutate(probability)
+    // TODO: child.mutate(.001)
   }
 
   /**
