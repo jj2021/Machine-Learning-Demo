@@ -9,8 +9,10 @@ class Genome {
     return this.genes;
   }
 
-  public mutate() {
-
+  public mutate(rate: number) {
+    for(let i = 0; i < this.genes.length; i++) {
+      this.genes[i] += this.genes[i] * (rate - Math.random() * rate * 2);
+    }
   }
   
   public toString(): string {

@@ -80,11 +80,11 @@ class GeneticAlgorithm {
 
     let matingPool = new Array<Genome>();
     for (let i = 0; i < population.individuals.length; i++) {
-      // TODO: Normalize the fitness values of the individuals
+      // Normalize the fitness values of the individuals
       let normScore = this.normalize(population.individuals[i].getScore(),bestScore,worstScore);
       console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
-      // TODO: Create a "mating pool" based on the scaled fitness
       let n = normScore * 100;
+      // Create a "mating pool" based on the scaled fitness
       for(let i = 0; i < n; i++) {
         matingPool.push(population.individuals[i]);
       }
