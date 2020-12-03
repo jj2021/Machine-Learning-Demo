@@ -5,7 +5,15 @@ class Genome {
     getData() {
         return this.genes;
     }
-    mutate() {
+    setData(data) {
+        this.genes = data;
+    }
+    mutate(rate, perturbance) {
+        for (let i = 0; i < this.genes.length; i++) {
+            if (Math.random() < rate) {
+                this.genes[i] += this.genes[i] * (perturbance - Math.random() * perturbance * 2);
+            }
+        }
     }
     toString() {
         let s = "";

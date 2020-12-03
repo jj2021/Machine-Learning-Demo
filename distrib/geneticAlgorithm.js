@@ -16,7 +16,7 @@ class GeneticAlgorithm {
      * Generate a random genome
      * @param size number of genes in the genome
      */
-    randGenome(size) {
+    static randGenome(size) {
         let member = new Genome(size);
         let data = member.getData();
         for (let k = 0; k < data.length; k++) {
@@ -50,8 +50,8 @@ class GeneticAlgorithm {
             let err = population.best.getScore();
             console.log("" + iteration + ": " + err);
             // Check for convergence
-            //converged = this.didConverge(err);
-            converged = true;
+            converged = this.didConverge(err);
+            //converged = true;
         }
     }
     /**
@@ -59,23 +59,41 @@ class GeneticAlgorithm {
      * @param population The population used to create the next epoch
      */
     iterate(population) {
-        // TODO: crossover and mutate at the correct rate
+        // crossover and mutate at the correct rate
+        // Create a mating pool for selecting parents to breed
         let bestGenome = population.getBest();
-        let worstGenome = population.getWorst();
-        let bestScore = bestGenome.getScore();
-        let worstScore = worstGenome.getScore();
         let matingPool = new Array();
         for (let i = 0; i < population.individuals.length; i++) {
-            // TODO: Normalize the fitness values of the individuals
-            let normScore = this.normalize(population.individuals[i].getScore(), bestScore, worstScore);
-            console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
-            // TODO: Create a "mating pool" based on the scaled fitness
+            // Normalize the fitness values of the individuals
+            // Fitness is already between 0 and 1 so just reverse for minimization effect
+            let normScore = 1 - population.individuals[i].getScore();
+            //console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
             let n = normScore * 100;
-            for (let i = 0; i < n; i++) {
+            //console.log(n);
+            // Create a "mating pool" based on the scaled fitness
+            // (The greater fittness, the greater the likelyhood of being a parent)
+            for (let j = 0; j < n; j++) {
                 matingPool.push(population.individuals[i]);
             }
         }
-        console.log("Mating pool: " + matingPool.length);
+        //console.log("Mating pool: " + matingPool.length);
+        // Use elite selection to avoid regressing
+        population.setMember(0, bestGenome);
+        // Execute cross-over to produce new epoch/generation of individuals
+        for (let i = 1; i < population.size; i++) {
+            // Select random parents from mating pool
+            let parentAIndex = Math.floor(Math.random() * matingPool.length);
+            let parentBIndex = Math.floor(Math.random() * matingPool.length);
+            let parentA = matingPool[parentAIndex];
+            let parentB = matingPool[parentBIndex];
+            let children = this.crossover(parentA, parentB);
+            if (Math.random() < .9) {
+                population.setMember(i, children[0]);
+                population.setMember(i + 1, children[1]);
+            }
+        }
+        // Update best and worst individual for the new epoch/generation
+        population.setBestWorst();
     }
     /**
      * Normalize an individuals score to 0 - 1 range
@@ -86,9 +104,25 @@ class GeneticAlgorithm {
     normalize(score, best, worst) {
         return (score - worst) / (best - worst);
     }
-    crossover() {
-        // TODO: Execute crossover by random selection from the mating pool
-        // TODO: child.mutate(probability)
+    crossover(parentA, parentB) {
+        // Execute crossover by random selection from the mating pool
+        let midPoint = Math.floor(GeneticAlgorithm.GENOME_SIZE / 2);
+        let parentA1 = parentA.getData().slice(0, midPoint);
+        let parentA2 = parentA.getData().slice(midPoint, GeneticAlgorithm.GENOME_SIZE);
+        let parentB1 = parentB.getData().slice(0, midPoint);
+        let parentB2 = parentB.getData().slice(midPoint, GeneticAlgorithm.GENOME_SIZE);
+        // Create children by crossing over at the mid point
+        let child1 = new Genome(GeneticAlgorithm.GENOME_SIZE);
+        let child2 = new Genome(GeneticAlgorithm.GENOME_SIZE);
+        child1.setData(parentA1.concat(parentB2));
+        child2.setData(parentB1.concat(parentA2));
+        // Mutate based on the given rate and amount of perturbance
+        child1.mutate(GeneticAlgorithm.MUTATION_RATE, .001);
+        child2.mutate(GeneticAlgorithm.MUTATION_RATE, .001);
+        let children = new Array();
+        children.push(child1);
+        children.push(child2);
+        return children;
     }
     /**
      * Check whether or not the network has converged
@@ -115,25 +149,15 @@ class GeneticAlgorithm {
         let pop = new Population(GeneticAlgorithm.POPULATION_SIZE);
         // TODO: Add random members to the population
         for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
-            pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
+            pop.setMember(i, GeneticAlgorithm.randGenome(GeneticAlgorithm.GENOME_SIZE));
         }
         pop.setBestWorst();
-        console.log(pop);
+        //console.log(pop);
         return pop;
-    }
-    /**
-     * Decides whether or not the function will execute based on
-     * probability
-     */
-    willExecute() {
-        // get the total probability
-        // generate a random number
-        // if the random number is less than the probability
-        // of the action then return true, otherwise return false
     }
 }
 GeneticAlgorithm.MUTATION_RATE = 0.01;
 GeneticAlgorithm.MAX_SAME_COUNT = 100;
 GeneticAlgorithm.GENOME_SIZE = 8;
-GeneticAlgorithm.POPULATION_SIZE = 10;
+GeneticAlgorithm.POPULATION_SIZE = 10000;
 //# sourceMappingURL=geneticAlgorithm.js.map

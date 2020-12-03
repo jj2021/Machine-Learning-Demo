@@ -3,7 +3,7 @@ class GeneticAlgorithm {
   static readonly MUTATION_RATE: number = 0.01;
   static readonly MAX_SAME_COUNT: number = 100;
   static readonly GENOME_SIZE: number = 8;
-  static readonly POPULATION_SIZE = 10;
+  static readonly POPULATION_SIZE = 10000;
   readonly TOLERANCE: number = 0.01;
   samecount: number = 0;
   ylast: number = 0;
@@ -23,7 +23,7 @@ class GeneticAlgorithm {
    * Generate a random genome
    * @param size number of genes in the genome
    */
-  public randGenome(size:number): Genome {
+  public static randGenome(size:number): Genome {
     let member = new Genome(size);
     let data = member.getData();
 
@@ -62,8 +62,8 @@ class GeneticAlgorithm {
       let err = population.best.getScore();
       console.log("" + iteration + ": " + err);
       // Check for convergence
-      //converged = this.didConverge(err);
-      converged = true;
+      converged = this.didConverge(err);
+      //converged = true;
     }
   }
 
@@ -76,36 +76,45 @@ class GeneticAlgorithm {
 
     // Create a mating pool for selecting parents to breed
     let bestGenome = population.getBest();
-    let worstGenome = population.getWorst();
-    let bestScore = bestGenome.getScore();
-    let worstScore = worstGenome.getScore();
 
     let matingPool = new Array<Genome>();
     for (let i = 0; i < population.individuals.length; i++) {
       // Normalize the fitness values of the individuals
-      let normScore = this.normalize(population.individuals[i].getScore(),bestScore,worstScore);
-      console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
+      // Fitness is already between 0 and 1 so just reverse for minimization effect
+      let normScore = 1 - population.individuals[i].getScore();
+      //console.log("Score: " + population.individuals[i].getScore() + " Norm Score:" + normScore);
       let n = normScore * 100;
+      //console.log(n);
       // Create a "mating pool" based on the scaled fitness
       // (The greater fittness, the greater the likelyhood of being a parent)
-      for(let i = 0; i < n; i++) {
+      for(let j = 0; j < n; j++) {
         matingPool.push(population.individuals[i]);
       }
     }
-    console.log("Mating pool: " + matingPool.length);
+    //console.log("Mating pool: " + matingPool.length);
+
+    // Use elite selection to avoid regressing
+    population.setMember(0, bestGenome);
 
     // Execute cross-over to produce new epoch/generation of individuals
-    for(let i = 0; i < population.size; i++){
+    for(let i = 1; i < population.size; i++){
       // Select random parents from mating pool
-      let parentAIndex = Math.floor(Math.random() * matingPool.length + 1)
-      let parentBIndex = Math.floor(Math.random() * matingPool.length + 1)
-      let parentA = population.getMember(parentAIndex);
-      let parentB = population.getMember(parentBIndex);
+      let parentAIndex = Math.floor(Math.random() * matingPool.length)
+      let parentBIndex = Math.floor(Math.random() * matingPool.length)
+
+      let parentA = matingPool[parentAIndex];
+      let parentB = matingPool[parentBIndex];
 
       let children = this.crossover(parentA, parentB);
-      population.setMember(i, children[0]);
-      population.setMember(i+1, children[1]);
+
+      if(Math.random() < .9) {
+        population.setMember(i, children[0]);
+        population.setMember(i+1, children[1]);
+      }
     }
+
+    // Update best and worst individual for the new epoch/generation
+    population.setBestWorst();
     
   }
 
@@ -120,9 +129,6 @@ class GeneticAlgorithm {
   }
 
   private crossover(parentA: Genome, parentB: Genome): Array<Genome> {
-    console.log(parentA);
-    console.log(parentB);
-
     // Execute crossover by random selection from the mating pool
     let midPoint = Math.floor(GeneticAlgorithm.GENOME_SIZE / 2);
     let parentA1 = parentA.getData().slice(0, midPoint);
@@ -136,9 +142,6 @@ class GeneticAlgorithm {
 
     child1.setData(parentA1.concat(parentB2));
     child2.setData(parentB1.concat(parentA2));
-
-    console.log(child1);
-    console.log(child2);
 
     // Mutate based on the given rate and amount of perturbance
     child1.mutate(GeneticAlgorithm.MUTATION_RATE, .001)
@@ -177,10 +180,10 @@ class GeneticAlgorithm {
     let pop = new Population(GeneticAlgorithm.POPULATION_SIZE);
     // TODO: Add random members to the population
     for (let i = 0; i < GeneticAlgorithm.POPULATION_SIZE; i++) {
-      pop.setMember(i, this.randGenome(GeneticAlgorithm.GENOME_SIZE));
+      pop.setMember(i, GeneticAlgorithm.randGenome(GeneticAlgorithm.GENOME_SIZE));
     }
     pop.setBestWorst();
-    console.log(pop);
+    //console.log(pop);
     return pop;
   }
 
