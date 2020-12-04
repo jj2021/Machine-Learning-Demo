@@ -9,9 +9,9 @@ class Genome {
         this.genes = data;
     }
     mutate(rate, perturbance) {
-        for (let i = 0; i < this.genes.length; i++) {
-            if (Math.random() < rate) {
-                this.genes[i] += this.genes[i] * (perturbance - Math.random() * perturbance * 2);
+        if (Math.random() < rate) {
+            for (let i = 0; i < this.genes.length; i++) {
+                this.genes[i] += this.genes[i] * (perturbance - (Math.random() * perturbance * 2));
             }
         }
     }

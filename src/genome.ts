@@ -14,11 +14,11 @@ class Genome {
   }
 
   public mutate(rate: number, perturbance: number) {
+    if(Math.random() < rate) {
       for(let i = 0; i < this.genes.length; i++) {
-        if(Math.random() < rate) {
-          this.genes[i] += this.genes[i] * (perturbance - Math.random() * perturbance * 2);
-        }
+          this.genes[i] += this.genes[i] * (perturbance - (Math.random() * perturbance * 2));
       }
+    }
   }
   
   public toString(): string {

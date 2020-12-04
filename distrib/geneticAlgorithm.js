@@ -87,6 +87,7 @@ class GeneticAlgorithm {
             let parentA = matingPool[parentAIndex];
             let parentB = matingPool[parentBIndex];
             let children = this.crossover(parentA, parentB);
+            // Actually Crossover 90% of the time
             if (Math.random() < .9) {
                 population.setMember(i, children[0]);
                 population.setMember(i + 1, children[1]);
