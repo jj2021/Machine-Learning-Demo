@@ -55,8 +55,8 @@ class Objective {
         return randomWeight;
     }
 }
-Objective.RANGE_MAX = 10.0;
-Objective.RANGE_MIN = -10.0;
+Objective.RANGE_MAX = 12.0;
+Objective.RANGE_MIN = -12.0;
 Objective.XOR_INPUTS = [
     [0.0, 0.0],
     [0.0, 1.0],

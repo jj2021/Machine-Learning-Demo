@@ -1,6 +1,6 @@
 class Objective {
-  private static readonly RANGE_MAX = 10.0;
-  private static readonly RANGE_MIN = -10.0;
+  private static readonly RANGE_MAX = 12.0;
+  private static readonly RANGE_MIN = -12.0;
   public static readonly XOR_INPUTS = [
     [0.0, 0.0],
     [0.0, 1.0],
