@@ -22,7 +22,7 @@ class Objective {
         let b1 = weights[6];
         let b2 = weights[7];
         let zh1 = w1 * x1 + w3 * x2 + b1 * 1.0;
-        let zh2 = w2 * x1 + w4 * x1 + b1 * 1.0;
+        let zh2 = w2 * x1 + w4 * x2 + b1 * 1.0;
         let h1 = Objective.sigmoid(zh1);
         let h2 = Objective.sigmoid(zh2);
         let zy1 = h1 * w5 + h2 * w6 + b2 * 1.0;
@@ -50,7 +50,8 @@ class Objective {
         return this.getFitness(weights);
     }
     static getRandomWeight() {
-        let randomWeight = Math.random() * (Objective.RANGE_MAX - Objective.RANGE_MIN) + Objective.RANGE_MIN;
+        let randomWeight = 0;
+        randomWeight = Math.random() * (Objective.RANGE_MAX - Objective.RANGE_MIN) + Objective.RANGE_MIN;
         return randomWeight;
     }
 }
