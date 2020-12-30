@@ -10,13 +10,21 @@
     <script src="distrib/objective.js"></script>
     <script src="distrib/population.js"></script>
     <script src="distrib/genome.js"></script>
+    <script src="distrib/pso.js"></script>
+    <script src="distrib/particle.js"></script>
   </head>
   <body onload="onDocumentLoad()">
     <canvas id="diagram"></canvas>
-    <input type = "button"
-           id = "startTraining"
-           name = "startTraining"
-           value="Start"
+    <input type="button"
+           id="startTraining"
+           name="startTraining"
+           value="GA"
            onclick="GeneticAlgorithm.run();">
+
+    <input type="button"
+           id="psoStart"
+           name="psoStart"
+           value="PSO"
+           onclick="PSO.run();">
   </body>
 </html>
