@@ -82,6 +82,7 @@ class PSO {
    */
   private didConverge(): boolean {
     let obj = new Objective();
+    let err = obj.calculateScoreParticle(new Particle(this.globalBest));
     if(this.samecount >= PSO.MAX_SAME_COUNT) {
       return true;
     }
