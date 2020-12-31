@@ -77,6 +77,11 @@ class Objective {
     return this.getFitness(weights);
   }
 
+  public calculateScoreParticle(particle:Particle): number {
+    let weights = particle.pos;
+    return this.getFitness(weights);
+  }
+
   public static getRandomWeight() {
     let randomWeight = 0;
     randomWeight = Math.random() * (Objective.RANGE_MAX - Objective.RANGE_MIN) + Objective.RANGE_MIN;
