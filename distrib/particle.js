@@ -1,10 +1,15 @@
 class Particle {
-    constructor(x, y) {
-        this.setPosition(x, y);
+    constructor(position) {
+        this.pos = position;
     }
-    setPosition(x, y) {
-        this.x = x;
-        this.y = y;
+    setPosition(position) {
+        this.pos = position;
+    }
+    setVelocity(vel) {
+        this.velocity = vel;
+    }
+    setBest(best) {
+        this.best = best;
     }
 }
 //# sourceMappingURL=particle.js.map
