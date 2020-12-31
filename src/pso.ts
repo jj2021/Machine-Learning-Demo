@@ -7,6 +7,8 @@ class PSO {
   private static readonly MAX_SAME_COUNT = 100;
   private samecount:number = 0;
   private swarm:Array<Particle>;
+  private globalBest:Array<number>;
+  private prevErr:number = 0;
   private w:number = 0.72984;
   private c1:number = 2.05;
   private c2:number = 2.05;
@@ -79,12 +81,17 @@ class PSO {
    * didConverge
    */
   private didConverge(): boolean {
+    let obj = new Objective();
     if(this.samecount >= PSO.MAX_SAME_COUNT) {
       return true;
     }
-    else {
+    else if(Math.abs(this.prevErr - err) < PSO.TOLERANCE) {
       this.samecount++;
     }
+    else {
+      this.samecount = 0;
+    }
+    this.prevErr = err;
     return false;
   }
 
