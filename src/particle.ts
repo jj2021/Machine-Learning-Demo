@@ -3,6 +3,7 @@ class Particle {
   public pos: Array<number>;
   public velocity: Array<number>;
   public best: Array<number>;
+  public bestScore: number;
 
   public constructor(position:Array<number>) {
     this.pos = position;
@@ -18,5 +19,9 @@ class Particle {
   
   public setBest(best:Array<number>) {
     this.best = best;
+  }
+
+  public setBestScore(score:number) {
+    this.bestScore = score;
   }
 }

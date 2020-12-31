@@ -1,6 +1,7 @@
 class PSO {
     constructor() {
         this.samecount = 0;
+        this.prevErr = 0;
         this.w = 0.72984;
         this.c1 = 2.05;
         this.c2 = 2.05;
@@ -8,7 +9,7 @@ class PSO {
     static run() {
         console.log("running particle swarm optimization");
         let optimizer = new PSO();
-        optimizer.solve();
+        //optimizer.solve();
     }
     /**
      * init
@@ -33,12 +34,14 @@ class PSO {
         //init swarm
         this.init();
         //loop
+        let iteration = 0;
         while (!converged) {
             //move particles
             this.moveParticles();
-            //get/update best
             //check convergence
             converged = this.didConverge();
+            console.log("" + iteration + ": " + this.globalBestScore + "\nbest: " + this.globalBest);
+            iteration++;
         }
     }
     /**
@@ -55,24 +58,42 @@ class PSO {
      * moveParticles
      */
     moveParticles() {
+        let obj = new Objective();
         for (let i = 0; i < this.swarm.length; i++) {
             //calculate new velocity
             let vel = this.calcVelocity(this.swarm[i]);
             //set particle position
             this.swarm[i].setVelocity(vel);
             this.swarm[i].setPosition(this.vectorAdd(this.swarm[i].pos, vel));
+            //calculate new score and compare to personal best
+            let score = obj.calculateScoreParticle(this.swarm[i]);
+            if (score < this.swarm[i].bestScore) {
+                this.swarm[i].bestScore = score;
+                this.swarm[i].best = this.swarm[i].pos;
+            }
+            //compare new score to swarm (global) best
+            if (score < this.globalBestScore) {
+                this.globalBestScore = score;
+                this.globalBest = this.swarm[i].pos;
+            }
         }
     }
     /**
      * didConverge
      */
     didConverge() {
+        let obj = new Objective();
+        let err = obj.calculateScoreParticle(new Particle(this.globalBest));
         if (this.samecount >= PSO.MAX_SAME_COUNT) {
             return true;
         }
-        else {
+        else if (Math.abs(this.prevErr - err) < PSO.TOLERANCE) {
             this.samecount++;
         }
+        else {
+            this.samecount = 0;
+        }
+        this.prevErr = err;
         return false;
     }
     /**

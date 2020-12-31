@@ -11,5 +11,8 @@ class Particle {
     setBest(best) {
         this.best = best;
     }
+    setBestScore(score) {
+        this.bestScore = score;
+    }
 }
 //# sourceMappingURL=particle.js.map

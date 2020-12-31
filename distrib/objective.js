@@ -49,6 +49,10 @@ class Objective {
         let weights = genome.getData();
         return this.getFitness(weights);
     }
+    calculateScoreParticle(particle) {
+        let weights = particle.pos;
+        return this.getFitness(weights);
+    }
     static getRandomWeight() {
         let randomWeight = 0;
         randomWeight = Math.random() * (Objective.RANGE_MAX - Objective.RANGE_MIN) + Objective.RANGE_MIN;

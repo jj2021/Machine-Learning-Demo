@@ -8,6 +8,7 @@ class PSO {
   private samecount:number = 0;
   private swarm:Array<Particle>;
   private globalBest:Array<number>;
+  private globalBestScore:number;
   private prevErr:number = 0;
   private w:number = 0.72984;
   private c1:number = 2.05;
@@ -16,7 +17,7 @@ class PSO {
   public static run() {
     console.log("running particle swarm optimization");
     let optimizer = new PSO();
-    optimizer.solve();
+    //optimizer.solve();
   }
   
   /**
@@ -44,12 +45,15 @@ class PSO {
     //init swarm
     this.init();
     //loop
+    let iteration = 0;
     while(!converged) {
       //move particles
       this.moveParticles();
-      //get/update best
       //check convergence
       converged = this.didConverge();
+
+      console.log("" + iteration + ": " + this.globalBestScore + "\nbest: " + this.globalBest);
+      iteration++;
     }
   }
 
@@ -68,12 +72,25 @@ class PSO {
    * moveParticles
    */
   private moveParticles() {
+    let obj = new Objective();
     for(let i = 0; i < this.swarm.length; i++) {
       //calculate new velocity
       let vel = this.calcVelocity(this.swarm[i]);
       //set particle position
       this.swarm[i].setVelocity(vel);
       this.swarm[i].setPosition(this.vectorAdd(this.swarm[i].pos, vel));
+
+      //calculate new score and compare to personal best
+      let score = obj.calculateScoreParticle(this.swarm[i]);
+      if(score < this.swarm[i].bestScore) {
+        this.swarm[i].bestScore = score;
+        this.swarm[i].best = this.swarm[i].pos;
+      }
+      //compare new score to swarm (global) best
+      if(score < this.globalBestScore) {
+        this.globalBestScore = score;
+        this.globalBest = this.swarm[i].pos;
+      }
     }
   }
 
