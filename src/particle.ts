@@ -1,13 +1,22 @@
 class Particle {
-  private x: number;
-  private y: number;
 
-  public constructor (x:number, y:number) {
-    this.setPosition(x, y);
+  public pos: Array<number>;
+  public velocity: Array<number>;
+  public best: Array<number>;
+
+  public constructor(position:Array<number>) {
+    this.pos = position;
   }
 
-  public setPosition(x:number, y:number) {
-    this.x = x;
-    this.y = y;
+  public setPosition(position:Array<number>) {
+    this.pos = position;
+  }
+
+  public setVelocity(vel:Array<number>) {
+    this.velocity = vel;
+  }
+  
+  public setBest(best:Array<number>) {
+    this.best = best;
   }
 }
