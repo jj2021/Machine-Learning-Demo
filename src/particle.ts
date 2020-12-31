@@ -7,6 +7,9 @@ class Particle {
 
   public constructor(position:Array<number>) {
     this.pos = position;
+    this.bestScore = Number.MAX_SAFE_INTEGER;
+    this.velocity = new Array<number>(8);
+    this.best = this.pos;
   }
 
   public setPosition(position:Array<number>) {

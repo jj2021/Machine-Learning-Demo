@@ -1,6 +1,9 @@
 class Particle {
     constructor(position) {
         this.pos = position;
+        this.bestScore = Number.MAX_SAFE_INTEGER;
+        this.velocity = new Array(8);
+        this.best = this.pos;
     }
     setPosition(position) {
         this.pos = position;

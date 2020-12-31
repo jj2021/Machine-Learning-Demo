@@ -1,7 +1,6 @@
 class PSO {
 
   private static size = 10000;
-  private static best:Array<number>;
   private static particleSize = 8;
   private static readonly TOLERANCE:number = 0.01;
   private static readonly MAX_SAME_COUNT = 100;
@@ -17,13 +16,15 @@ class PSO {
   public static run() {
     console.log("running particle swarm optimization");
     let optimizer = new PSO();
-    //optimizer.solve();
+    optimizer.solve();
   }
   
   /**
    * init
    */
   private init() {
+    this.globalBestScore = Number.MAX_SAFE_INTEGER;
+    let obj = new Objective();
     //randomly initialize particles
     this.swarm = new Array<Particle>(10000);
     for(let i = 0; i < PSO.size; i++) {
@@ -34,6 +35,13 @@ class PSO {
       }
 
       this.swarm[i] = new Particle(curPos);
+
+      //calculate initial swarm best
+      let score = obj.calculateScoreParticle(this.swarm[i]);
+      if(score < this.globalBestScore) {
+        this.globalBestScore = score;
+        this.globalBest = this.swarm[i].pos;
+      }
     }
   }
 
@@ -54,6 +62,9 @@ class PSO {
 
       console.log("" + iteration + ": " + this.globalBestScore + "\nbest: " + this.globalBest);
       iteration++;
+      if(iteration > 200) {
+        converged = true;
+      }
     }
   }
 
@@ -64,7 +75,7 @@ class PSO {
   private calcVelocity(p:Particle): Array<number> { 
     let inertia = this.vectorScale(p.velocity, this.w);
     let cogvec = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
-    let socialvec = this.vectorScale(this.vectorSub(PSO.best, p.pos), this.c2 * (Math.random() + 2));
+    let socialvec = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
     return this.vectorAdd(this.vectorAdd(cogvec, socialvec), inertia);
   }
 
