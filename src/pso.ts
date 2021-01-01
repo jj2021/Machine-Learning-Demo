@@ -11,7 +11,7 @@ class PSO {
   private prevErr:number = 0;
   private w:number = 0.72984;
   private c1:number = 2.05;
-  private c2:number = 2.05;
+  private c2:number = 2.15;
 
   public static run() {
     console.log("running particle swarm optimization");
@@ -57,11 +57,14 @@ class PSO {
     while(!converged) {
       //move particles
       this.moveParticles();
+      console.log(this.swarm[100]);
       //check convergence
       converged = this.didConverge();
 
       console.log("" + iteration + ": " + this.globalBestScore + "\nbest: " + this.globalBest);
       iteration++;
+      converged = true;
+      //Safety net so the algorithm does not get stuck in an infinite loop
       if(iteration > 200) {
         converged = true;
       }
@@ -73,9 +76,12 @@ class PSO {
    * @param p particle to calculate velocity for
    */
   private calcVelocity(p:Particle): Array<number> { 
-    let inertia = this.vectorScale(p.velocity, this.w);
-    let cogvec = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
-    let socialvec = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
+    let inertia:Array<number> = this.vectorScale(p.velocity, this.w);
+    console.log(inertia);
+    let cogvec:Array<number> = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
+    console.log(cogvec);
+    let socialvec:Array<number> = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
+    console.log(socialvec);
     return this.vectorAdd(this.vectorAdd(cogvec, socialvec), inertia);
   }
 
@@ -86,7 +92,10 @@ class PSO {
     let obj = new Objective();
     for(let i = 0; i < this.swarm.length; i++) {
       //calculate new velocity
-      let vel = this.calcVelocity(this.swarm[i]);
+      let vel = new Array<number>(0,0,0,0,0,0,0,0);
+      if(i == 0) {
+        let vel = this.calcVelocity(this.swarm[i]);
+      }
       //set particle position
       this.swarm[i].setVelocity(vel);
       this.swarm[i].setPosition(this.vectorAdd(this.swarm[i].pos, vel));
