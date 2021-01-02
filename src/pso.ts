@@ -8,15 +8,24 @@ class PSO {
   private swarm:Array<Particle>;
   private globalBest:Array<number>;
   private globalBestScore:number;
+  private nextGlobalBest:Array<number>;
+  private nextGlobalBestScore:number;
   private prevErr:number = 0;
   private w:number = 0.72984;
   private c1:number = 2.05;
-  private c2:number = 2.15;
+  private c2:number = 2.05;
 
   public static run() {
     console.log("running particle swarm optimization");
     let optimizer = new PSO();
     optimizer.solve();
+
+    /*
+    //test the calc vel method
+    optimizer.init();
+    let boid = optimizer.swarm[100];
+    console.log(optimizer.calcVelocity(boid));
+    */
   }
   
   /**
@@ -24,9 +33,10 @@ class PSO {
    */
   private init() {
     this.globalBestScore = Number.MAX_SAFE_INTEGER;
+    this.nextGlobalBestScore = Number.MAX_SAFE_INTEGER;
     let obj = new Objective();
     //randomly initialize particles
-    this.swarm = new Array<Particle>(10000);
+    this.swarm = new Array<Particle>(PSO.size);
     for(let i = 0; i < PSO.size; i++) {
       //create new 8 dimensional position 
       let curPos = new Array<number>(8);
@@ -57,17 +67,20 @@ class PSO {
     while(!converged) {
       //move particles
       this.moveParticles();
-      console.log(this.swarm[100]);
+      //console.log(this.swarm[100]);
       //check convergence
       converged = this.didConverge();
 
       console.log("" + iteration + ": " + this.globalBestScore + "\nbest: " + this.globalBest);
       iteration++;
-      converged = true;
       //Safety net so the algorithm does not get stuck in an infinite loop
       if(iteration > 200) {
         converged = true;
       }
+
+      //update the best score and position
+      this.globalBest = this.nextGlobalBest;
+      this.globalBestScore = this.nextGlobalBestScore;
     }
   }
 
@@ -77,11 +90,8 @@ class PSO {
    */
   private calcVelocity(p:Particle): Array<number> { 
     let inertia:Array<number> = this.vectorScale(p.velocity, this.w);
-    console.log(inertia);
     let cogvec:Array<number> = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
-    console.log(cogvec);
     let socialvec:Array<number> = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
-    console.log(socialvec);
     return this.vectorAdd(this.vectorAdd(cogvec, socialvec), inertia);
   }
 
@@ -92,10 +102,7 @@ class PSO {
     let obj = new Objective();
     for(let i = 0; i < this.swarm.length; i++) {
       //calculate new velocity
-      let vel = new Array<number>(0,0,0,0,0,0,0,0);
-      if(i == 0) {
-        let vel = this.calcVelocity(this.swarm[i]);
-      }
+      let vel = this.calcVelocity(this.swarm[i]);
       //set particle position
       this.swarm[i].setVelocity(vel);
       this.swarm[i].setPosition(this.vectorAdd(this.swarm[i].pos, vel));
@@ -107,9 +114,9 @@ class PSO {
         this.swarm[i].best = this.swarm[i].pos;
       }
       //compare new score to swarm (global) best
-      if(score < this.globalBestScore) {
-        this.globalBestScore = score;
-        this.globalBest = this.swarm[i].pos;
+      if(score < this.globalBestScore && score < this.nextGlobalBestScore) {
+        this.nextGlobalBestScore = score;
+        this.nextGlobalBest = this.swarm[i].pos;
       }
     }
   }
