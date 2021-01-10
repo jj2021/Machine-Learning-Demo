@@ -1,6 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
+
+.center {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.intro-title {
+  margin-top: 1rem;
+  font-family: 'Merriweather';
+}
+
 #diagram {
   width: 800px;
   height: 500px;
   background-color: white;
   border: 1px solid black;
+  margin-top: 1rem;
+}
+
+.controls {
+  margin: 2rem 1rem;
+}
+
+#intro-text {
+  text-align: left;
+  width: 50%;
+  margin: 0 auto;
 }

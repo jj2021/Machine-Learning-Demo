@@ -2,6 +2,19 @@ var canvas;
 var ctx;
 const radius = 50;
 
+var myBrown = '#C28176';
+var myLightGreen = '#A2C24F';
+var myDarkGreen = '#637536';
+var myBlue = '#6386C2';
+
+function gaHandler() {
+  GeneticAlgorithm.run();
+}
+
+function psoHandler() {
+  PSO.run();
+}
+
 /**
  * Initialize the UI when the page loads
  */
@@ -29,23 +42,23 @@ function animate() {
   // Connect the neurons
 
   // Connect x1 to h1
-  connectNeurons(100,100,400,100,'#FFA9B6');
+  connectNeurons(100,100,400,100,myBrown);
   // Connect x2 to h2
-  connectNeurons(100,300,400,300,'#E6B8FF');
+  connectNeurons(100,300,400,300,myBlue);
   //Connect x1 to h2
-  connectNeurons(100,100,400,300,'#68FBF0'); 
+  connectNeurons(100,100,400,300,myLightGreen); 
   // Connect x2 to h1 
-  connectNeurons(100,300,400,100,'#BDFF00'); 
+  connectNeurons(100,300,400,100,myDarkGreen); 
   // Connect b1 to h1
-  connectNeurons(250,400,400,100,'#FFA9B6');
+  connectNeurons(250,400,400,100,myBrown);
   // Connect b1 to h2
-  connectNeurons(250,400,400,300,'#E6B8FF');
+  connectNeurons(250,400,400,300,myBlue);
   // Connect h1 to y1
-  connectNeurons(400,100,700,200,'#68FBF0');
+  connectNeurons(400,100,700,200,myLightGreen);
   // Connect h2 to y1
-  connectNeurons(400,300,700,200,'#BDFF00');
+  connectNeurons(400,300,700,200,myDarkGreen);
   // Connect b2 to y1
-  connectNeurons(550,400,700,200,'#FFA9B6');
+  connectNeurons(550,400,700,200,myBrown);
 
   // Draw the weight values
   drawWeights();
@@ -85,17 +98,17 @@ function connectNeurons(x1,y1,x2,y2,color) {
  */
 function drawWeights() {
   ctx.font = '20px Arial';
-  ctx.fillStyle = '#FFA9B6';
+  ctx.fillStyle = myBrown;
   ctx.fillText('w1:',200,90);
   ctx.fillText('b1:',200,345);
   ctx.fillText('b2:',500,320);
-  ctx.fillStyle = '#68FBF0';
+  ctx.fillStyle = myLightGreen;
   ctx.fillText('w2:',200,150);
   ctx.fillText('w5:',500,100);
-  ctx.fillStyle = '#BDFF00';
+  ctx.fillStyle = myDarkGreen;
   ctx.fillText('w3:',120,220);
   ctx.fillText('w6:',500,230);
-  ctx.fillStyle = '#E6B8FF';
+  ctx.fillStyle = myBlue;
   ctx.fillText('w4:',190,290);
   ctx.fillText('b1:',310,400);
 }
