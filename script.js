@@ -8,7 +8,19 @@ var myDarkGreen = '#637536';
 var myBlue = '#6386C2';
 
 function gaHandler() {
-  GeneticAlgorithm.run();
+  document.getElementById("gaStart").disabled = true;
+  GeneticAlgorithm.run().then((answer) => {
+    console.log(answer);
+  }, 
+  (error) => {
+    console.log("GA Run Promise error: " + error);
+  })
+  document.getElementById("gaStart").disabled = false;
+
+  //document.getElementById("gaStart").disabled = true;
+  //let answer = GeneticAlgorithm.run();
+  //console.log(answer);
+  //document.getElementById("gaStart").disabled = false;
 }
 
 function psoHandler() {
