@@ -14,7 +14,8 @@ class GeneticAlgorithm {
   public static async run(): Promise<Genome> {
     let ga = new GeneticAlgorithm();
 
-    let best = ga.solve();
+    //let best = ga.solve();
+    let best = await ga.asyncSolve();
 
     console.log("best = " + best.toString() + " fitness = " + best.getScore());
 
@@ -25,11 +26,9 @@ class GeneticAlgorithm {
     console.log("" + Objective.XOR_INPUTS[2][0] + "    " + Objective.XOR_INPUTS[2][1] + "    " + Objective.XOR_IDEALS[2] + "    " + obj.feedforward(Objective.XOR_INPUTS[2][0], Objective.XOR_INPUTS[2][1], best.getData()));
     console.log("" + Objective.XOR_INPUTS[3][0] + "    " + Objective.XOR_INPUTS[3][1] + "    " + Objective.XOR_IDEALS[3] + "    " + obj.feedforward(Objective.XOR_INPUTS[3][0], Objective.XOR_INPUTS[3][1], best.getData()));
 
-    return new Promise((resolve, reject) => {
-      resolve(best);
-    });
-
-    //return best;
+    //return best
+    //return the best individual in a promise
+    return new Promise((resolve) => resolve(best));
   }
 
   /**
@@ -60,6 +59,18 @@ class GeneticAlgorithm {
   }
 
   /**
+   * Solve the objective and return the best individual 
+   */
+  public async asyncSolve(): Promise<Genome> {
+    // Initialize the population
+    let population = this.initPop();
+    // Run the training algorithm asynchornously then return the best individual
+    //return this.iter_train(population).then(() => population.getBest());
+    await this.iter_train(population);
+    return population.getBest();
+  }
+
+  /**
    * Run the training algorithm (iterate over generations)
    * @param population The population to train
    */
@@ -77,6 +88,26 @@ class GeneticAlgorithm {
       // Check for convergence
       converged = this.didConverge(err);
     }
+  }
+
+  /**
+   * Run the iterative training algorithm
+   * @param population The population to train
+   */
+  private async iter_train(population: Population) {
+    this.iterate(population);
+    let err = population.best.getScore();
+    console.log("Error: " + err + "\nbest: " + population.getBest());
+    if (!this.didConverge(err)) {
+      //pause to unblock UI
+      await this.sleep(100);
+      await this.iter_train(population);
+    }
+  }
+
+  //custom sleep function to force setTimeout to return a promise
+  private async sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
