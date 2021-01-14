@@ -8,13 +8,14 @@ var myDarkGreen = '#637536';
 var myBlue = '#6386C2';
 
 function gaHandler() {
-  document.getElementById("gaStart").classList.add('disabled');
+  disableTrainingButtons();
   GeneticAlgorithm.run().then((answer) => {
     console.log(answer);
-    document.getElementById("gaStart").classList.remove('disabled');
+    enableTrainingButtons();
   }, 
   (error) => {
     console.log("GA Run Promise error: " + error);
+    enableTrainingButtons();
   })
 
   //document.getElementById("gaStart").disabled = true;
@@ -25,6 +26,16 @@ function gaHandler() {
 
 function psoHandler() {
   PSO.run();
+}
+
+function disableTrainingButtons() {
+  document.getElementById("gaStart").classList.add('disabled');
+  document.getElementById("psoStart").classList.add('disabled');
+}
+
+function enableTrainingButtons() {
+  document.getElementById("gaStart").classList.remove('disabled');
+  document.getElementById("psoStart").classList.remove('disabled');
 }
 
 /**

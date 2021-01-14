@@ -45,6 +45,9 @@ class GeneticAlgorithm {
         // Return the best genome
         return population.getBest();
     }
+    /**
+     * Solve the objective and return the best individual
+     */
     async asyncSolve() {
         // Initialize the population
         let population = this.initPop();
@@ -71,6 +74,10 @@ class GeneticAlgorithm {
             converged = this.didConverge(err);
         }
     }
+    /**
+     * Run the iterative training algorithm
+     * @param population The population to train
+     */
     async iter_train(population) {
         this.iterate(population);
         let err = population.best.getScore();
