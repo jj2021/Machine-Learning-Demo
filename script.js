@@ -26,7 +26,12 @@ function gaHandler() {
 }
 
 function psoHandler() {
-  PSO.run();
+  disableTrainingButtons();
+  PSO.run_async().then(answer => {
+    console.log(answer);
+    enableTrainingButtons();
+    animate(answer);
+  })
 }
 
 function disableTrainingButtons() {
@@ -129,18 +134,18 @@ function connectNeurons(x1,y1,x2,y2,color) {
 function drawWeights(weights) {
   ctx.font = '20px Arial';
   ctx.fillStyle = myBrown;
-  ctx.fillText('w1:' + (Math.round(weights[0] * 1000)/1000),200,90);
-  ctx.fillText('b1:' + (Math.round(weights[6] * 1000)/1000),190,345);
-  ctx.fillText('b2:' + (Math.round(weights[7] * 1000)/1000),500,320);
+  ctx.fillText('w1: ' + (Math.round(weights[0] * 1000)/1000),200,90);
+  ctx.fillText('b1: ' + (Math.round(weights[6] * 1000)/1000),190,345);
+  ctx.fillText('b2: ' + (Math.round(weights[7] * 1000)/1000),500,320);
   ctx.fillStyle = myLightGreen;
-  ctx.fillText('w2:' + (Math.round(weights[1] * 1000)/1000),200,150);
-  ctx.fillText('w5:' + (Math.round(weights[4] * 1000)/1000),500,100);
+  ctx.fillText('w2: ' + (Math.round(weights[1] * 1000)/1000),200,150);
+  ctx.fillText('w5: ' + (Math.round(weights[4] * 1000)/1000),500,100);
   ctx.fillStyle = myDarkGreen;
-  ctx.fillText('w3:' + (Math.round(weights[2] * 1000)/1000),120,220);
-  ctx.fillText('w6:' + (Math.round(weights[5] * 1000)/1000),500,230);
+  ctx.fillText('w3: ' + (Math.round(weights[2] * 1000)/1000),120,220);
+  ctx.fillText('w6: ' + (Math.round(weights[5] * 1000)/1000),500,230);
   ctx.fillStyle = myBlue;
-  ctx.fillText('w4:' + (Math.round(weights[3] * 1000)/1000),190,290);
-  ctx.fillText('b1:' + (Math.round(weights[6] * 1000)/1000),310,400);
+  ctx.fillText('w4: ' + (Math.round(weights[3] * 1000)/1000),190,290);
+  ctx.fillText('b1: ' + (Math.round(weights[6] * 1000)/1000),310,400);
 }
 
 /**

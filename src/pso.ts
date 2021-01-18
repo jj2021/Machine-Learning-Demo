@@ -28,6 +28,14 @@ class PSO {
     */
   }
   
+  public static async run_async(): Promise<Array<number>> {
+    console.log("running PSO in async mode");
+    let optimizer = new PSO();
+    optimizer.init();
+    await optimizer.iter_solve();
+    return optimizer.globalBest;
+  }
+  
   /**
    * init
    */
@@ -82,6 +90,30 @@ class PSO {
       this.globalBest = this.nextGlobalBest;
       this.globalBestScore = this.nextGlobalBestScore;
     }
+  }
+
+  /**
+   * iter_solve
+   * 
+   * Optimizes the model iteratively, allowing for sleep function to unbloock
+   * the UI
+   * @param p iter_solve
+   */
+  private async iter_solve() {
+    let converged:boolean = false;
+    this.moveParticles();
+    converged = this.didConverge();
+    console.log("best score: " + this.globalBestScore + "\nbest: " + this.globalBest);
+    this.globalBest = this.nextGlobalBest;
+    this.globalBestScore = this.nextGlobalBestScore;
+    if(!converged) {
+      await this.sleep(100);
+      await this.iter_solve();
+    }
+  }
+
+  private async sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**

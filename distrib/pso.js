@@ -17,6 +17,13 @@ class PSO {
         console.log(optimizer.calcVelocity(boid));
         */
     }
+    static async run_async() {
+        console.log("running PSO in async mode");
+        let optimizer = new PSO();
+        optimizer.init();
+        await optimizer.iter_solve();
+        return optimizer.globalBest;
+    }
     /**
      * init
      */
@@ -66,6 +73,28 @@ class PSO {
             this.globalBest = this.nextGlobalBest;
             this.globalBestScore = this.nextGlobalBestScore;
         }
+    }
+    /**
+     * iter_solve
+     *
+     * Optimizes the model iteratively, allowing for sleep function to unbloock
+     * the UI
+     * @param p iter_solve
+     */
+    async iter_solve() {
+        let converged = false;
+        this.moveParticles();
+        converged = this.didConverge();
+        console.log("best score: " + this.globalBestScore + "\nbest: " + this.globalBest);
+        this.globalBest = this.nextGlobalBest;
+        this.globalBestScore = this.nextGlobalBestScore;
+        if (!converged) {
+            await this.sleep(100);
+            await this.iter_solve();
+        }
+    }
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
     /**
      * calcVelocity
