@@ -8,9 +8,13 @@ var myDarkGreen = '#637536';
 var myBlue = '#6386C2';
 
 function gaHandler() {
+  document.getElementById("gaSpinner").classList.add('spinner-grow');
+  document.getElementById("gaSpinner").classList.add('spinner-grow-sm');
   disableTrainingButtons();
   GeneticAlgorithm.run().then((answer) => {
     console.log(answer);
+    document.getElementById("gaSpinner").classList.remove('spinner-grow');
+    document.getElementById("gaSpinner").classList.remove('spinner-grow-sm');
     enableTrainingButtons();
     animate(answer.genes);
   }, 
@@ -26,9 +30,13 @@ function gaHandler() {
 }
 
 function psoHandler() {
+  document.getElementById("psoSpinner").classList.add('spinner-grow');
+  document.getElementById("psoSpinner").classList.add('spinner-grow-sm');
   disableTrainingButtons();
   PSO.run_async().then(answer => {
     console.log(answer);
+    document.getElementById("psoSpinner").classList.remove('spinner-grow');
+    document.getElementById("psoSpinner").classList.remove('spinner-grow-sm');
     enableTrainingButtons();
     animate(answer);
   })

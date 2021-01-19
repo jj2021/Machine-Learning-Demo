@@ -29,19 +29,15 @@
       <canvas id="diagram"></canvas>
     </div>
     <div class="center">
-      <input type="button"
-            id="gaStart"
-            class="btn btn-primary controls"
-            name="gaStart"
-            value="Start GA"
-            onclick="gaHandler();">
+      <button id="gaStart" type="button" class="btn btn-primary controls" onclick="gaHandler();">
+        Start GA
+        <span id="gaSpinner"></span>
+      </button>
 
-      <input type="button"
-            id="psoStart"
-            class="btn btn-primary controls"
-            name="psoStart"
-            value="Start PSO"
-            onclick="psoHandler();">
+      <button id="psoStart" type="button" class="btn btn-primary controls" onclick="psoHandler();">
+        Start PSO
+        <span id="psoSpinner"></span>
+      </button>
     </div>
   </body>
 </html>
