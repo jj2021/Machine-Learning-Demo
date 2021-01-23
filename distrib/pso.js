@@ -22,7 +22,14 @@ class PSO {
         let optimizer = new PSO();
         optimizer.init();
         await optimizer.iter_solve();
-        return optimizer.globalBest;
+        let best = optimizer.globalBest;
+        let obj = new Objective();
+        let result00 = obj.feedforward(Objective.XOR_INPUTS[0][0], Objective.XOR_INPUTS[0][1], best);
+        let result01 = obj.feedforward(Objective.XOR_INPUTS[1][0], Objective.XOR_INPUTS[1][1], best);
+        let result10 = obj.feedforward(Objective.XOR_INPUTS[2][0], Objective.XOR_INPUTS[2][1], best);
+        let result11 = obj.feedforward(Objective.XOR_INPUTS[3][0], Objective.XOR_INPUTS[3][1], best);
+        let err = optimizer.globalBestScore;
+        return { best, result00, result01, result10, result11, err };
     }
     /**
      * init

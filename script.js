@@ -14,7 +14,7 @@ function gaHandler() {
     console.log(answer);
     disableSpinner("gaSpinner");
     enableTrainingButtons();
-    animate(answer.genes);
+    animate(answer.best.genes);
   }, 
   (error) => {
     console.log("GA Run Promise error: " + error);
@@ -29,7 +29,7 @@ function psoHandler() {
     console.log(answer);
     disableSpinner("psoSpinner");
     enableTrainingButtons();
-    animate(answer);
+    animate(answer.best);
   })
 }
 

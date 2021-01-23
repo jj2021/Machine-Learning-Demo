@@ -11,7 +11,7 @@ class GeneticAlgorithm {
   /**
    * Run the genetic algorithm for the XOR network
    */
-  public static async run(): Promise<Genome> {
+  public static async run(): Promise<Object> {
     let ga = new GeneticAlgorithm();
 
     //let best = ga.solve();
@@ -20,6 +20,12 @@ class GeneticAlgorithm {
     console.log("best = " + best.toString() + " fitness = " + best.getScore());
 
     let obj = new Objective();
+    let result00 = obj.feedforward(Objective.XOR_INPUTS[0][0], Objective.XOR_INPUTS[0][1], best.getData());
+    let result01 = obj.feedforward(Objective.XOR_INPUTS[1][0], Objective.XOR_INPUTS[1][1], best.getData());
+    let result10 = obj.feedforward(Objective.XOR_INPUTS[2][0], Objective.XOR_INPUTS[2][1], best.getData());
+    let result11 = obj.feedforward(Objective.XOR_INPUTS[3][0], Objective.XOR_INPUTS[3][1], best.getData());
+    let err = best.getScore();
+
     console.log("x1    x2    t1    y1");
     console.log("" + Objective.XOR_INPUTS[0][0] + "    " + Objective.XOR_INPUTS[0][1] + "    " + Objective.XOR_IDEALS[0] + "    " + obj.feedforward(Objective.XOR_INPUTS[0][0], Objective.XOR_INPUTS[0][1], best.getData()));
     console.log("" + Objective.XOR_INPUTS[1][0] + "    " + Objective.XOR_INPUTS[1][1] + "    " + Objective.XOR_IDEALS[1] + "    " + obj.feedforward(Objective.XOR_INPUTS[1][0], Objective.XOR_INPUTS[1][1], best.getData()));
@@ -28,7 +34,7 @@ class GeneticAlgorithm {
 
     //return best
     //return the best individual in a promise
-    return new Promise((resolve) => resolve(best));
+    return new Promise((resolve) => resolve({best, result00, result01, result10, result11, err}));
   }
 
   /**
