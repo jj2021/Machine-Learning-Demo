@@ -8,13 +8,11 @@ var myDarkGreen = '#637536';
 var myBlue = '#6386C2';
 
 function gaHandler() {
-  document.getElementById("gaSpinner").classList.add('spinner-grow');
-  document.getElementById("gaSpinner").classList.add('spinner-grow-sm');
+  enableSpinner("gaSpinner");
   disableTrainingButtons();
   GeneticAlgorithm.run().then((answer) => {
     console.log(answer);
-    document.getElementById("gaSpinner").classList.remove('spinner-grow');
-    document.getElementById("gaSpinner").classList.remove('spinner-grow-sm');
+    disableSpinner("gaSpinner");
     enableTrainingButtons();
     animate(answer.genes);
   }, 
@@ -22,21 +20,14 @@ function gaHandler() {
     console.log("GA Run Promise error: " + error);
     enableTrainingButtons();
   })
-
-  //document.getElementById("gaStart").disabled = true;
-  //let answer = GeneticAlgorithm.run();
-  //console.log(answer);
-  //document.getElementById("gaStart").disabled = false;
 }
 
 function psoHandler() {
-  document.getElementById("psoSpinner").classList.add('spinner-grow');
-  document.getElementById("psoSpinner").classList.add('spinner-grow-sm');
+  enableSpinner("psoSpinner");
   disableTrainingButtons();
   PSO.run_async().then(answer => {
     console.log(answer);
-    document.getElementById("psoSpinner").classList.remove('spinner-grow');
-    document.getElementById("psoSpinner").classList.remove('spinner-grow-sm');
+    disableSpinner("psoSpinner");
     enableTrainingButtons();
     animate(answer);
   })
@@ -52,6 +43,16 @@ function enableTrainingButtons() {
   document.getElementById("psoStart").classList.remove('disabled');
 }
 
+function enableSpinner(element) {
+  document.getElementById(element).classList.add('spinner-grow');
+  document.getElementById(element).classList.add('spinner-grow-sm');
+}
+
+function disableSpinner(element) {
+  document.getElementById(element).classList.remove('spinner-grow');
+  document.getElementById(element).classList.remove('spinner-grow-sm');
+}
+
 /**
  * Initialize the UI when the page loads
  */
@@ -61,7 +62,7 @@ var onDocumentLoad = function() {
   canvas.width = 800;
   canvas.height = 500;
 
-  animate(['','','','','','','','']);
+  animate([0,0,0,0,0,0,0,0]);
 }
 /**
  * Draw the diagram of the neural network onto the canvas
