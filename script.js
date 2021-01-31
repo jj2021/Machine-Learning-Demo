@@ -15,6 +15,7 @@ function gaHandler() {
     disableSpinner("gaSpinner");
     enableTrainingButtons();
     animate(answer.best.genes);
+    populateTable(answer);
   }, 
   (error) => {
     console.log("GA Run Promise error: " + error);
@@ -30,6 +31,7 @@ function psoHandler() {
     disableSpinner("psoSpinner");
     enableTrainingButtons();
     animate(answer.best);
+    populateTable(answer);
   })
 }
 
@@ -64,6 +66,33 @@ var onDocumentLoad = function() {
 
   animate([0,0,0,0,0,0,0,0]);
 }
+
+function populateTable(answerObj){
+  if(answerObj.result00 !== undefined && answerObj.result00 !== null) {
+    document.getElementById("result00").innerHTML = precRound(answerObj.result00, 5);
+  }
+  if(answerObj.result01 !== undefined && answerObj.result01 !== null) {
+    document.getElementById("result01").innerHTML = precRound(answerObj.result01, 5);
+  }
+  if(answerObj.result10 !== undefined && answerObj.result10 !== null) {
+    document.getElementById("result10").innerHTML = precRound(answerObj.result10, 5);
+  }
+  if(answerObj.result11 !== undefined && answerObj.result11 !== null) {
+    document.getElementById("result11").innerHTML = precRound(answerObj.result11, 5);
+  }
+  if(answerObj.err !== undefined && answerObj.err !== null) {
+    document.getElementById("resultErr").innerHTML = precRound(answerObj.err, 5);
+  }
+}
+
+/**
+ * Round a number to the given number of decimal places
+ */
+function precRound(num, precision) {
+  place = Math.pow(10, precision);
+  return Math.round(num * place) / place;
+}
+
 /**
  * Draw the diagram of the neural network onto the canvas
  */
