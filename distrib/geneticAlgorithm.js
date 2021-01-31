@@ -114,7 +114,9 @@ class GeneticAlgorithm {
             // Create a "mating pool" based on the scaled fitness
             // (The greater fittness, the more spots in the mating pool)
             for (let j = 0; j < n; j++) {
-                matingPool.push(population.individuals[i]);
+                if (normScore > .55) {
+                    matingPool.push(population.individuals[i]);
+                }
             }
         }
         // Use elite selection to avoid regressing
