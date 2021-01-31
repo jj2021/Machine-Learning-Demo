@@ -109,8 +109,8 @@ class PSO {
      */
     calcVelocity(p) {
         let inertia = this.vectorScale(p.velocity, this.w);
-        let cogvec = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
-        let socialvec = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
+        let cogvec = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() * 2));
+        let socialvec = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() * 2));
         return this.vectorAdd(this.vectorAdd(cogvec, socialvec), inertia);
     }
     /**

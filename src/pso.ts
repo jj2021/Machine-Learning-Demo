@@ -131,8 +131,8 @@ class PSO {
    */
   private calcVelocity(p:Particle): Array<number> { 
     let inertia:Array<number> = this.vectorScale(p.velocity, this.w);
-    let cogvec:Array<number> = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() + 2));
-    let socialvec:Array<number> = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() + 2));
+    let cogvec:Array<number> = this.vectorScale(this.vectorSub(p.best, p.pos), this.c1 * (Math.random() * 2));
+    let socialvec:Array<number> = this.vectorScale(this.vectorSub(this.globalBest, p.pos), this.c2 * (Math.random() * 2));
     return this.vectorAdd(this.vectorAdd(cogvec, socialvec), inertia);
   }
 
